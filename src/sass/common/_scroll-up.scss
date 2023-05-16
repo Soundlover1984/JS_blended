@@ -1,0 +1,43 @@
+.scroll-up {
+    position: fixed;
+    right: 50px;
+    bottom: 50px;
+    z-index: 4;
+    width: 64px;
+    height: 64px;
+    background-color: rgba($color: $dark-gray-color, $alpha: 0.7);
+    cursor: pointer;
+    visibility: hidden;
+    border-radius: 50%;
+    box-shadow: inset 0 0 0 4px rgba(204, 201, 220, 0.3);
+    opacity: 0;
+    transition: 0.2s;
+    transform: translateY(25px);
+}
+
+ .scroll-up__arrow{
+    position: absolute;
+    left: 20px;
+    top: 20px;
+    fill: $yellow-color;
+ }
+
+
+.scroll-up--active {
+    visibility: visible;
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.scroll-up__svg-path {
+    box-sizing: border-box;
+    fill: none;
+    stroke: $yellow-color;
+    stroke-width: 6px;
+    transition: 0.2s;
+}
+
+
+
+
+

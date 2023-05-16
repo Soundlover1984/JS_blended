@@ -1,0 +1,78 @@
+<main class="main">
+  <section class="shopping-list__page">
+    <h1 class="shopping-main__title">
+      Shopping <span class="shopping-main__title--violet-color">List</span>
+    </h1>
+    <div class="empty-list">
+      <p class="shopping-empty-text">
+        This page is empty, add some books and proceed to order.
+      </p>
+      <img
+        class="shopping-empty-img"
+        srcset="
+          ./images/shopingImg/emptyList-265.png 265w,
+          ./images/shopingImg/emptyList-322.png 322w,
+          ./images/shopingImg/emptyList-530.png 530w,
+          ./images/shopingImg/emptyList-644.png 644w
+        "
+        sizes="(min-width: 768px) 322px,(max-width: 767px) 265px, 100vw"
+        src="./images/shopingImg/emptyList-265.png"
+        alt="books"
+        loading="lazy"
+      />
+    </div>
+    <ul class="shopping-main__list-js"></ul>
+    <div class="pagination__block pagination__block-js">
+      <ul class="pagination__list">
+        <li class="pagination__item create-left-arrows-js">
+          <button
+            type="button"
+            class="pagination__btn-arrow-l pagination__btn-first-page-js"
+          >
+            <svg width="7" height="13" class="arrow__svg">
+              <use
+                href="/src/images/icons.svg#icon-arrow-to-left"
+              ></use>
+            </svg>
+            <svg width="7" height="13" class="arrow__svg">
+              <use
+                href="/src/images/icons.svg#icon-arrow-to-left"
+              ></use>
+            </svg>
+          </button>
+          <button class="pagination__btn-arrow-l pagination__btn-per-page-js">
+            <svg width="7" height="13" class="arrow__svg">
+              <use
+                href="/src/images/icons.svg#icon-arrow-to-left"
+              ></use>
+            </svg>
+          </button>
+        </li>
+        <li class="pagination__item">
+          <ul class="pagination__item-create-pages pagination__item-js"></ul>
+        </li>
+        <li class="pagination__item">
+          <button class="pagination__btn-arrow-r pagination__btn-next-page-js">
+            <svg width="7" height="13" class="arrow__svg">
+              <use
+                href="/src/images/icons.svg#icon-arrow-to-right"
+              ></use>
+            </svg>
+          </button>
+          <button class="pagination__btn-arrow-r pagination__btn-last-page-js">
+            <svg width="7" height="13" class="arrow__svg">
+              <use
+                href="/src/images/icons.svg#icon-arrow-to-right"
+              ></use>
+            </svg>
+            <svg width="7" height="13" class="arrow__svg">
+              <use
+                href="/src/images/shoppingSvg/icons.svg#icon-arrow-to-right"
+              ></use>
+            </svg>
+          </button>
+        </li>
+      </ul>
+    </div>
+  </section>
+</main>
