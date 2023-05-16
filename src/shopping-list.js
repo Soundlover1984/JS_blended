@@ -4,6 +4,6 @@ import './js/auth-modal';
 import './js/scroll-up';
 import './js/darkTheme';
 import './js/shopping-list/getShoppingList';
-import './js/header';
+import './js/header/header';
 import './js/support';
 import './js/auth';

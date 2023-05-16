@@ -8,7 +8,6 @@ export const markupCardFund = (
       srcset="${img} 1x, ${img2} 2x"
       src="${img}"
       alt="${title}"
-      width="149"
       loading="lazy"
     />
   </a>

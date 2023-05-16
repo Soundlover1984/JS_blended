@@ -6,5 +6,5 @@ import './js/darkTheme';
 import './js/categories';
 import './js/home/homeCategories';
 import './js/support';
-import './js/header';
+import './js/header/header';
 import './js/auth';
