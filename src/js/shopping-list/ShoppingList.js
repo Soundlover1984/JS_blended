@@ -1,5 +1,5 @@
 import { writeUserData } from '../firebase/auth';
-import { Spiner } from '../spiner-loader';
+import { Spiner } from '../other/spiner-loader';
 
 const shoppingList = document.querySelector('.shopping-main__list-js');
 const emptyList = document.querySelector('.empty-list');
@@ -17,7 +17,6 @@ try {
 } catch (error) {
   console.log(error);
 }
-
 
 const renderShoppingList = dataBooks => {
   if (Array.isArray(dataBooks)) {

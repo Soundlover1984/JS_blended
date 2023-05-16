@@ -1,4 +1,4 @@
-import { initializeApp } from 'firebase/app'; // for initial
+import { initializeApp } from 'firebase/app'; 
 import {
   getAuth,
   onAuthStateChanged,
@@ -7,21 +7,11 @@ import {
   updateProfile,
   signOut,
 } from 'firebase/auth';
-import { getDatabase, ref, set, get, update, child } from 'firebase/database'; //access to databes from app
+import { getDatabase, ref, set, get, update, child } from 'firebase/database'; 
 import Notiflix from 'notiflix';
 Notiflix.Notify.init({ position: 'center-top' });
 
 // Конфігурація
-
-// const firebaseConfig = {
-//   apiKey: 'AIzaSyCJZfRrsHQkGY832RTQdNJAXqiStLwTuCM',
-//   authDomain: 'powerhouse-book.firebaseapp.com',
-//   projectId: 'powerhouse-book',
-//   storageBucket: 'powerhouse-book.appspot.com',
-//   messagingSenderId: '973042323439',
-//   appId: '1:973042323439:web:80208c7a84163eaba8701a',
-//   databaseURL: 'https://powerhouse-book-default-rtdb.firebaseio.com',
-// };
 
 
 const firebaseConfig = {
@@ -92,7 +82,7 @@ const monitorAuthState = async () => {
   });
 };
 
-monitorAuthState(); // Запуск перевірик статусу!
+monitorAuthState(); // Запуск перевірки статусу!
 
 //Ствоерення користувача з іменем, паролем та поштою
 
@@ -157,7 +147,7 @@ const handleSignOut = async () => {
 logOutBtn.addEventListener('click', handleSignOut);
 dropLogOutBtn.addEventListener('click', handleSignOut);
 
-//форм сабміт
+// Перемикач на форму
 
 const handleFormSubmit = event => {
   event.preventDefault();
@@ -225,7 +215,6 @@ function writeInitialUserData(userId, email) {
 
 export async function writeUserData(newData) {
   try {
-    // console.log('writeUserData');
     const updates = { shoppingList: newData };
     onAuthStateChanged(auth, user => {
       if (user) {

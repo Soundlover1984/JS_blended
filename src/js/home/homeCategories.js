@@ -1,8 +1,8 @@
 import Notiflix from 'notiflix';
-import { fetchBooks } from '../fetchBooks';
+import { fetchBooks } from '../api/BooksApiService';
 import { handleModalWindow } from '../modals/modal';
 import { drawCategory } from '../side-bar/categories';
-import { Spiner } from '../spiner-loader';
+import { Spiner } from '../other/spiner-loader';
 import debounce from 'lodash.debounce';
 
 const mainTitleEl = document.querySelector('.main__title-js');
@@ -15,7 +15,6 @@ let title = 0;
 const spiner = new Spiner();
 
 window.addEventListener('resize', debounce(handleWindowResize, 50));
-
 
 function handleWindowResize(event) {
   const width = event.target.outerWidth;
@@ -30,7 +29,6 @@ function handleWindowResize(event) {
   }
 }
 
-
 const currentWindowWidth = () => {
   if (currentRenderWidth < 768) {
     amountRenderBooks = 1;
@@ -41,7 +39,6 @@ const currentWindowWidth = () => {
   }
 };
 
-
 const validationQuery = query => {
   if (query.length === 0) {
     Notiflix.Notify.failure(
@@ -50,7 +47,6 @@ const validationQuery = query => {
     return;
   }
 };
-
 
 const makeMarkupAllCategories = categories => {
   return categories
@@ -69,7 +65,6 @@ const makeMarkupAllCategories = categories => {
     })
     .join('');
 };
-
 
 export const makeMarkupGategory = category => {
   return trimArrayBooks(category)
@@ -102,7 +97,6 @@ export const makeMarkupGategory = category => {
     .join('');
 };
 
-
 async function feachAllCategories() {
   try {
     spiner.show();
@@ -124,14 +118,11 @@ async function feachAllCategories() {
   }
 }
 
-
 export const showAllCategories = () => {
   mainTitleEl.innerHTML =
     ' Best Sellers <span class="main__title--color-purple">Books</span>';
   feachAllCategories();
 };
-
-
 
 const handleImgClick = event => {
   event.preventDefault();
@@ -143,7 +134,6 @@ const handleImgClick = event => {
   handleModalWindow(idBook);
 };
 
-
 export const currentDocumentScroll = () => {
   if (currentRenderWidth < 768) {
     document.documentElement.scrollTop = 736;
@@ -154,7 +144,6 @@ export const currentDocumentScroll = () => {
   }
 };
 
-
 const handleSeeMoreBtnClick = event => {
   title = event.target.dataset.category;
 
@@ -162,7 +151,6 @@ const handleSeeMoreBtnClick = event => {
   drawCategory(title);
   currentDocumentScroll();
 };
-
 
 export const checkLengthBookTitle = (title, length) => {
   if (title.length > length) {
