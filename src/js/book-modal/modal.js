@@ -1,222 +1,164 @@
-// Імпорт необхідних модулів
-import { BooksApiService } from '../api/booksApiService';
-import { iconUrls } from './icon-urls';
-
-// Створення екземпляру BooksApiService
-const booksApiService = new BooksApiService();
-
-
-// Ключ для зберігання списку покупок в локальному сховищі
-const SHOPPING_LIST_KEY = 'SHOPPING_LIST_KEY';
-
-// Масив книг
-let bookArray = [];
-
-// Отримання поточних даних з локального сховища
-const currentStorage = JSON.parse(localStorage.getItem(SHOPPING_LIST_KEY));
-
-
-// Посилання на елементи DOM
-const refs = {
-  bookModal: document.querySelector('.content-conteiner'),
-  openModalBtn: document.querySelector('[data-modal-open]'),
-  closeModalBtn: document.querySelector('[data-modal-close]'),
-  backdrop: document.querySelector('.js-backdrop'),
-  btnAddBook: document.querySelector('.js-btn-modal-add-book'),
-  removeCover: document.querySelector('.js-remove-book-cover'),
-  removeBtn: document.querySelector('.js-btn-modal-remove-book'),
+import { fetchBooks } from '../api/booksApiService';
+import renderModal from '../templates/modal.hbs';
+import { Spiner } from '../other/spinerLoader';
+import { writeUserData } from '../firebase/auth';
+const globalRefs = {
+  backdrop: document.querySelector('.backdrop-js'),
+  modal: document.querySelector('.modal-js'),
 };
 
-refs.removeCover.classList.add('is-hidden');
+const BOOKS_DATA_KEY = 'books-data';
+const USER_DATA_KEY = 'user-data';
+const bookArray = [];
+const currentStorage = JSON.parse(localStorage.getItem(BOOKS_DATA_KEY));
+const spiner = new Spiner();
+
+const imgSrcs = {
+  amazonSrcX1: require('../images/modal/image-1@1x.png'),
+  amazonSrcX2: require('../images/modal/image-1@2x.png'),
+  appleBooksSrcX1: require('../images/modal/image-2@1x.png'),
+  appleBooksSrcX2: require('../images/modal/image-2@2x.png'),
+  barnesAndNobleSrcX1: require('../images/modal/image-3@1x.png'),
+  barnesAndNobleSrcX2: require('../images/modal/image-3@2x.png'),
+};
 
 if (currentStorage) {
-  bookArray = currentStorage;
+  bookArray.push(...currentStorage);
 } else {
-  localStorage.setItem(SHOPPING_LIST_KEY, JSON.stringify([]));
+  localStorage.setItem(BOOKS_DATA_KEY, JSON.stringify([]));
 }
 
-refs.openModalBtn.addEventListener('click', openModal);
-refs.closeModalBtn.addEventListener('click', removeModal);
-refs.btnAddBook.addEventListener('click', addBookBtnClick);
-refs.removeBtn.addEventListener('click', removeBookBtnClick);
+// Этот код экспортирует асинхронную функцию с именем handleModalWindow, которая принимает один аргумент - bookId. Функция выполняет следующие действия:
 
-// Змінна для зберігання поточних даних про книгу
-let currentBookData = null;
+// Показывает спиннер.
+// Получает данные книги, используя функцию fetchBooks.getBookById() и сохраняет результат в bookData.
+// Получает логическое значение из localStorage, используя ключ USER_DATA_KEY, и сохраняет его в IsUserLogged.
+// Инициализирует переменные amazonUrl, appleBooksUrl и barnesAndNobleUrl, находя соответствующие URL в массиве bookData.buy_links.
+// Добавляет и удаляет CSS-классы для отображения/скрытия модального окна и заднего фона, и добавляет класс для отключения прокрутки.
+// Вставляет динамический HTML-контент в модальное окно с использованием функции renderModal() и отображает его пользователю.
+// Скрывает спиннер.
+// Инициализирует ссылки на различные элементы DOM внутри модального окна.
+// Скрывает определенные элементы (например, кнопку "Добавить в корзину") в зависимости от того, вошел ли пользователь в систему и/или уже добавил ли он книгу в свою корзину.
+// Добавляет слушатели событий для реагирования на действия пользователя (щелчок по кнопке "Добавить в корзину", удаление книги из корзины и т.д.).
+// Определяет несколько функций для обращения с различными типами взаимодействия пользователя.
+// Перехватывает и регистрирует любые ошибки, возникающие во время выполнения функции.
 
-/**
- * Обробник кліку на кнопці "Додати книгу"
- * Отримує дані про книгу та додає їх до масиву книг
- */
-async function addBookBtnClick() {
-  const bookData = await getBookDetails();
-  if (bookData) {
-    currentBookData = bookData;
-    const bookIndex = bookArray.findIndex(book => book._id === currentBookData._id);
-    if (bookIndex === -1) {
-      bookArray.push(bookData);
-      localStorage.setItem(SHOPPING_LIST_KEY, JSON.stringify(bookArray));
-      refs.btnAddBook.classList.add('is-hidden');
-      refs.removeCover.classList.remove('is-hidden');
-    }
-  }
-}
-
-/**
- * Обробник кліку на кнопці "Видалити книгу"
- * Видаляє поточну книгу з масиву книг
- */
-function removeBookBtnClick() {
-  if (currentBookData) {
-    const bookIndex = bookArray.findIndex(book => book._id === currentBookData._id);
-    if (bookIndex !== -1) {
-      bookArray.splice(bookIndex, 1);
-      localStorage.setItem(SHOPPING_LIST_KEY, JSON.stringify(bookArray));
-      currentBookData = null;
-      refs.btnAddBook.classList.remove('is-hidden');
-      refs.removeCover.classList.add('is-hidden');
-    }
-  }
-}
-
-/**
- * Отримання деталей про книгу
- * @returns {Promise<Object>} - Об'єкт з деталями про книгу
- * @throws {Error} - Помилка при отриманні деталей про книгу
- */
-async function getBookDetails() {
+export async function handleModalWindow(bookId) {
   try {
-    const bookData = await booksApiService.getBookOnId();
-    return bookData;
+    spiner.show();
+
+    const bookData = await fetchBooks.getBookById(bookId);
+    const IsUserLogged = JSON.parse(localStorage.getItem(USER_DATA_KEY));
+
+    const amazonUrl = bookData.buy_links.find(
+      book => book.name === 'Amazon'
+    ).url;
+    const appleBooksUrl = bookData.buy_links.find(
+      book => book.name === 'Apple Books'
+    ).url;
+    const barnesAndNobleUrl = bookData.buy_links.find(
+      book => book.name === 'Barnes and Noble'
+    ).url;
+
+    globalRefs.modal.classList.remove('is-hidden');
+    globalRefs.backdrop.classList.remove('is-hidden');
+    document.body.classList.add('modal-open');
+
+    globalRefs.modal.innerHTML = renderModal({
+      ...bookData,
+      amazonUrl,
+      appleBooksUrl,
+      barnesAndNobleUrl,
+      ...imgSrcs,
+    });
+
+    spiner.hide();
+
+    const refs = {
+      addBtn: document.querySelector('.modal__add-btn-js'),
+      removeBlock: document.querySelector('.modal__remove-block-js'),
+      removeBtn: document.querySelector('.modal__remove-btn-js'),
+      closeModalBtn: document.querySelector('.modal__close-btn-js'),
+    };
+
+    refs.removeBlock.classList.add('is-hidden');
+
+    if (!IsUserLogged) {
+      refs.addBtn.classList.add('is-hidden');
+    }
+
+    const isBookInStorage = bookArray.find(book => book._id === bookData._id);
+    const bookIndex = bookArray.indexOf(isBookInStorage);
+
+    if (isBookInStorage && IsUserLogged) {
+      refs.addBtn.classList.add('is-hidden');
+      refs.removeBlock.classList.remove('is-hidden');
+    }
+
+    window.addEventListener('keydown', handleEscKeyPress);
+    window.addEventListener('click', handleBackDropClick);
+    refs.addBtn.addEventListener('click', handleAddBtnClick);
+    refs.removeBtn.addEventListener('click', handleRemoveBtnClick);
+    refs.closeModalBtn.addEventListener('click', handleCloseModalBtnClick);
+
+    function handleCloseModalBtnClick() {
+      closeModal();
+      removeListeners();
+      clearInterface();
+      document.body.classList.remove('modal-open');
+    }
+
+    function handleAddBtnClick() {
+      bookArray.push(bookData);
+
+      localStorage.setItem(BOOKS_DATA_KEY, JSON.stringify(bookArray));
+      writeUserData(bookArray); //Write user shopping list to DB
+      refs.addBtn.classList.add('is-hidden');
+      refs.removeBlock.classList.remove('is-hidden');
+    }
+
+    function handleRemoveBtnClick() {
+      bookArray.splice(bookIndex, 1);
+      writeUserData(bookArray); //Write user shopping list to DB
+      localStorage.setItem(BOOKS_DATA_KEY, JSON.stringify(bookArray));
+
+      refs.addBtn.classList.remove('is-hidden');
+      refs.removeBlock.classList.add('is-hidden');
+    }
+
+    function handleEscKeyPress(evt) {
+      const isEsc = evt.code === 'Escape';
+      if (isEsc) {
+        closeModal();
+        removeListeners();
+        clearInterface();
+        document.body.classList.remove('modal-open');
+      }
+    }
+
+    function handleBackDropClick(evt) {
+      if (evt.target === globalRefs.backdrop) {
+        closeModal();
+        removeListeners();
+        clearInterface();
+        document.body.classList.remove('modal-open');
+      }
+    }
+
+    function closeModal() {
+      globalRefs.modal.classList.add('is-hidden');
+      globalRefs.backdrop.classList.add('is-hidden');
+    }
+
+    function removeListeners() {
+      window.removeEventListener('keydown', handleEscKeyPress);
+      window.removeEventListener('click', handleBackDropClick);
+    }
+
+    function clearInterface() {
+      globalRefs.modal.innerHTML = '';
+    }
   } catch (error) {
-    console.error(error);
-    throw new Error('Failed to fetch book details');
+    console.log(error);
   }
 }
-
-/**
- * Відкриття модального вікна з деталями про книгу
- */
-async function openModal() {
-  const bookData = await getBookDetails();
-  if (bookData) {
-    renderBookDetails(bookData);
-    document.body.classList.add('show-modal');
-    refs.backdrop.addEventListener('click', backdropClickHandler);
-    document.addEventListener('keydown', keydownHandler);
-    refs.closeModalBtn.addEventListener('click', removeModal);
-  }
-}
-
-/**
- * Рендеринг деталей про книгу
- * @param {Object} bookData - Об'єкт з деталями про книгу
- */
-function renderBookDetails(bookData) {
-  const markup = createBookDetailsMarkup(bookData);
-  refs.bookModal.innerHTML = markup;
-}
-
-/**
- * Створення розмітки книги
- * @param {Object} book - Об'єкт з даними книги
- * @returns {string} - Розмітка книги
- */
-function createBookDetailsMarkup(bookData) {
-  const { book_image, title, author, description, buy_links } = bookData;
-
-  const markup = `
-    <div class="book-details">
-      <img class="book-details__cover" src="${book_image}" alt="${title}" />
-      <div class="book-details__info">
-        <h2 class="book-details__title">${title}</h2>
-        <h3 class="book-details__author">${author}</h3>
-        <p class="book-details__description">${description}</p>
-        <ul class="modal-shopping-list">
-          ${buy_links ? createBuyLinksMarkup(buy_links) : ''}
-        </ul>
-      </div>
-    </div>`;
-  return markup;
-}
-
-/**
-        Створення розмітки посилань на покупку
-        @param {Array} buyLinks - Масив з посиланнями на покупку
-        @returns {string} - Розмітка посилань на покупку
-        */
-function createBuyLinksMarkup(buyLinks) {
-  const supportedStores = ["Amazon", "Apple Books", "Bookshop"];
-
-  const filteredLinks = buyLinks.filter(link => supportedStores.includes(link.name));
-
-  return filteredLinks
-    .map((link) => {
-      const { name, url } = link;
-      const { iconUrl, iconUrl2x } = getIconUrlForStore(name);
-      return `<li class="modal-shopping-list__item">
-                <a class="buy-link" href="${url}" target="_blank" rel="noopener noreferrer nofollow">
-                  <img class="buy-link__img"
-                    srcset="${iconUrl} 1x, ${iconUrl2x} 2x"
-                    src="${iconUrl}"
-                    alt="${name}"
-                    width="40"
-                    height="40"
-                  />
-                </a>
-              </li>`;
-    })
-    .join("");
-}
-
-/**
-        
-        Отримання URL-адреси іконки магазину
-        @param {string} storeName - Назва магазину
-        @returns {Object} - Об'єкт з URL-адресами іконки магазину
-        */
-function getIconUrlForStore(storeName) {
-  const store = iconUrls.find(item => item.name === storeName);
-  if (store) {
-    return {
-      iconUrl: store.iconUrl,
-      iconUrl2x: store.iconUrl2x,
-    };
-  } else {
-    return {
-      iconUrl: '',
-      iconUrl2x: '',
-    };
-  }
-}
-
-/**
- * Закриття модального вікна
- */
-function removeModal() {
-  refs.bookModal.innerHTML = '';
-  document.body.classList.remove('show-modal');
-  refs.closeModalBtn.removeEventListener('click', removeModal);
-  refs.backdrop.removeEventListener('click', backdropClickHandler);
-  document.removeEventListener('keydown', keydownHandler);
-}
-
-/**
- * Обробник кліку на підкладці (backdrop)
- * @param {Event} event - Об'єкт події
- */
-function backdropClickHandler(event) {
-  if (event.target === refs.backdrop) {
-    removeModal();
-  }
-}
-
-/**
- * Обробник натискання клавіші
- * @param {KeyboardEvent} event - Об'єкт події
- */
-function keydownHandler(event) {
-  if (event.code === 'Escape') {
-    removeModal();
-  }
-}
-

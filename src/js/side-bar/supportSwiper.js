@@ -1,15 +1,39 @@
+import { fundArray } from './side-bar/supportFundArray';
+import { markupCardFund } from './side-bar/supportCreateList';
 import Swiper from 'swiper';
-const btnSwiper = document.querySelector('.swiper-button');
+
+const supportListEl = document.querySelector('.support__list-js');
+const btnSwiperEl = document.querySelector('.swiper-button-next');
+
+let position = 0;
+
+const addLeadingZero = value => {
+  return String(value).padStart(2, '0');
+};
+
+const markupSetFunds = fundArray
+  .map((el, i) => {
+    position = addLeadingZero(i + 1);
+
+    return markupCardFund(el, position);
+  })
+  .join('');
+
+supportListEl.innerHTML = markupSetFunds;
+
 const swiper = new Swiper('.swiper', {
   direction: 'vertical',
-  slidesPerView: 'auto',
   spaceBetween: 20,
+  slidesPerView: 'auto',
   rewind: true,
+
   navigation: {
-    nextEl: '.swiper-button',
+    nextEl: '.swiper-button-next',
   },
 });
+
 swiper.update();
-btnSwiper.addEventListener('click', () => {
+
+btnSwiperEl.addEventListener('click', () => {
   swiper.slideNext();
 });

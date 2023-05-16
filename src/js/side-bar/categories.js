@@ -1,65 +1,90 @@
 import Notiflix from 'notiflix';
-import { BooksApiService } from '../api/booksApiService';
+import { fetchBooks } from '../api/booksApiService';
+import { makeMarkupGategory, showAllCategories } from './home-collection/homeCollection';
+import { addEventListenerForBook } from './home-collection/homeCollection';
+import { showAllCategories } from './home-collection/homeCollection';
+import { Spiner } from '../other/spinerLoader';
+import { currentDocumentScroll } from './home-collection/homeCollection';
 
-const categoriesContainer = document.querySelector('.categories__list');
-const booksApiService = new BooksApiService();
-booksApiService.selectedCategory = '0';
+const listEl = document.querySelector('.categories-list-js');
+const mainListEl = document.querySelector('.main__list-js');
+const mainTitle = document.querySelector('.main__title-js');
+const allCategoriesBtn = document.querySelector('.all-categories-btn');
+let title = '';
 
-async function displayCategories() {
+allCategoriesBtn.classList.add('selected-categories');
+
+const spiner = new Spiner();
+
+const createCategoryList = async () => {
   try {
-    const categoryList = await booksApiService.getCategoryList();
-    createCategoriesList(categoryList);
-  } catch (error) {
-    console.error(error);
-    throw new Error('Failed to fetch category list');
-  }
+    const categoriesList = await fetchBooks.getCategoriesList();
 
-  function createCategoriesList(categoryList) {
-    const categoriesItem = categoryList
-      .map(({ list_name }) => `<li class="categories__item">${list_name}</li>`)
+    const makeNewButtons = categoriesList
+      .map(
+        category =>
+          `<li class= 'categories-list__item '> <button class= 'categories-list__button'>${category.list_name}</button> </li>`
+      )
       .join('');
-    categoriesContainer.insertAdjacentHTML('beforeend', categoriesItem);
-  }
-}
-displayCategories();
-
-categoriesContainer.addEventListener('click', selectCategory);
-
-function selectCategory(event) {
-  if (!event.target.classList.contains('categories__item')) {
-    return;
-  } else {
-    const categoriesItems = document.querySelectorAll('.categories__item');
-    categoriesItems.forEach(item =>
-      item.classList.remove('categories-is-active')
-    );
-    event.target.classList.add('categories-is-active');
-    booksApiService.selectedCategory = event.target.textContent;
-    console.log(booksApiService.selectedCategory);
-    getSelectCategory();
-  }
-}
-
-async function getSelectCategory() {
-  try {
-    const listSelectCategoryBooks = await booksApiService.getCategoryBooks();
-    renderSelectBooks(listSelectCategoryBooks);
+    listEl.insertAdjacentHTML('beforeend', makeNewButtons);
   } catch (error) {
-    console.error(error);
-    throw new Error('Failed to fetch category list');
+    console.log(error);
+  }
+};
+
+createCategoryList();
+
+const validationQuery = query => {
+  if (query.length === 0) {
+    Notiflix.Notify.failure(
+      'Sorry, there was an error on the server. Please try again.'
+    );
+    return;
+  }
+};
+
+export const drawCategory = async name => {
+  spiner.show();
+
+  const books = await fetchBooks.getBooksByCategory(name);
+  const markup = makeMarkupGategory(books);
+  const titleArr = name.split(' ');
+  const titleFirstPart = titleArr.slice(0, titleArr.length - 1).join(' ');
+  const titleLastPart = titleArr.slice(titleArr.length - 1).join();
+  mainTitle.innerHTML = `${titleFirstPart}<span class="main__title--color-purple"> ${titleLastPart}</span>`;
+  mainListEl.innerHTML = markup;
+  mainListEl.classList.add('card-set');
+  const bookCategoryEl = document.querySelectorAll('.category-books__item');
+  addEventListenerForBook(bookCategoryEl);
+  allCategoriesBtn.classList.remove('selected-categories');
+
+  spiner.hide();
+};
+
+listEl.addEventListener('click', markup);
+
+function markup(ev) {
+  if (ev.target.nodeName !== 'BUTTON') {
+    return;
   }
 
-  // функція яка буде рендерити розмітку, Notiflix.Notify.info буде встановлено, якщо категорія книг буде порожня
-  function renderSelectBooks(books) {
-    Notiflix.Notify.info(
-      'Unfortunately, nothing was found with the specified parameters. Please try changing the parameters and performing a new search. Thank you for using our website!',
-      {
-        width: '1000px',
-        position: 'center-center',
-        fontSize: '20px',
-        backOverlayColor: 'rgba(17,17,17,0.6)',
-      }
-    );
-    console.log(books);
+  clearSelectedCategories();
+
+  if (ev.target === allCategoriesBtn) {
+    allCategoriesBtn.classList.add('selected-categories');
+    showAllCategories();
+    return;
   }
+  title = ev.target.textContent;
+  drawCategory(title);
+  ev.target.classList.add('selected-categories');
+  currentDocumentScroll();
 }
+
+const clearSelectedCategories = () => {
+  for (let i = 0; i < listEl.children.length; i += 1) {
+    const category = listEl.children[i];
+
+    category.firstElementChild.classList.remove('selected-categories');
+  }
+};
