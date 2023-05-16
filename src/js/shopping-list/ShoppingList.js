@@ -1,4 +1,4 @@
-import { writeUserData } from '../auth';
+import { writeUserData } from '../firebase/auth';
 import { Spiner } from '../spiner-loader';
 
 const shoppingList = document.querySelector('.shopping-main__list-js');
@@ -18,7 +18,6 @@ try {
   console.log(error);
 }
 
-// Этот код описывает функцию renderShoppingList. Функция принимает один параметр dataBooks, который вероятно содержит данные о книгах. Если dataBooks является массивом, то он используется для создания разметки, которая затем добавляется в shoppingList (вероятно, это список покупок). Также добавляется слушатель кликов на элементы разметки, чтобы можно было удалять элементы из списка. Если dataBooks не является массивом, тогда тег div с классом "shoppingList" становится скрытым (это вероятно означает, что список покупок пустой) и тег div с классом "emptyList" становится видимым. Наконец, после завершения работы функции, скрывается спиннер, который вероятно отображается, пока данные грузятся или обрабатываются.
 
 const renderShoppingList = dataBooks => {
   if (Array.isArray(dataBooks)) {
@@ -31,15 +30,6 @@ const renderShoppingList = dataBooks => {
   }
   spinner.hide();
 };
-// pagination
-
-// Этот код определяет функцию с именем renderCountButtons, которая принимает один аргумент selectedPage. Функция находит на странице элемент с классом pagination__item-create-pages и назначает слушатель события клика на него, который вызывает функцию createFocusSwitcher. Функция createFocusSwitcher добавляет класс focus-color элементу allButtons, если клик произошел на кнопке, находящейся внутри элемента pagesCounterList.
-
-// Далее определяется переменная pageQuantity, которая вычисляет количество страниц на основе количества элементов массива dataBooks (оно делится на 3).
-
-// Далее определяется пустой массив allButtons, который заполняется в цикле от 1 до pageQuantity. Каждая итерация добавляет в массив строку с тегами HTML для кнопки с номером страницы. Если номер страницы равен selectedPage, то для кнопки добавляется класс selected.
-
-// Наконец, содержимое элемента pagesCounterList заменяется строкой, полученной из элементов массива allButtons, соединенных через разделитель , с помощью метода join().
 
 const renderCountButtons = selectedPage => {
   const pagesCounterList = document.querySelector(

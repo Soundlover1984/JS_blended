@@ -1,7 +1,7 @@
 import { fetchBooks } from '../fetchBooks';
 import renderModal from '../../templates/modal.hbs';
 import { Spiner } from '../spiner-loader';
-import { writeUserData } from '../auth';
+import { writeUserData } from '../firebase/auth';
 const globalRefs = {
   backdrop: document.querySelector('.backdrop-js'),
   modal: document.querySelector('.modal-js'),
