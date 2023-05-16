@@ -1,4 +1,4 @@
-import openCloseIcon from '../images/icons.svg';
+import openCloseIcon from '../../images/icons.svg';
 
 
 // ВІДПРИТТЯ/ЗАКРИТТЯ КНОПОК АВТОРИЗАЦІЇ
