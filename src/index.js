@@ -1,10 +1,10 @@
 import './js/fetchBooks';
-import './js/modal';
+import './js/modals/modal';
 import './js/auth-modal';
 import './js/scroll-up';
 import './js/darkTheme';
-import './js/categories';
+import './js/side-bar/categories';
 import './js/home/homeCategories';
-import './js/support';
+import './js/support/support';
 import './js/header/header';
 import './js/auth';
