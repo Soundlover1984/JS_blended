@@ -1,5 +1,5 @@
 import Notiflix from 'notiflix';
-import { fetchBooks } from '../api/booksApiService';
+import { fetchBooks } from '../api/fetchBooks';
 import { handleModalWindow } from '../book-modal/modal';
 import { drawCategory } from '../side-bar/categories';
 import { Spiner } from '../other/spinerLoader';

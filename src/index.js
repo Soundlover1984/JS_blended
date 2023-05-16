@@ -1,5 +1,5 @@
-import './js/api/booksApiService';
-import './js/home-collection/homeCollection';
+import './js/api/fetchBooks';
+import './js/home/home';
 import './js/auth-modal/auth-modal';
 import './js/book-modal/modal';
 import './js/dark-theme/dark-theme';

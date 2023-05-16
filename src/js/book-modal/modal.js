@@ -1,4 +1,4 @@
-import { fetchBooks } from '../api/booksApiService';
+import { fetchBooks } from '../api/fetchBooks';
 import renderModal from '../../templates/modal.hbs';
 import { Spiner } from '../other/spinerLoader';
 import { writeUserData } from '../firebase/auth';
@@ -14,12 +14,12 @@ const currentStorage = JSON.parse(localStorage.getItem(BOOKS_DATA_KEY));
 const spiner = new Spiner();
 
 const imgSrcs = {
-  amazonSrcX1: require('../images/modal/image-1@1x.png'),
-  amazonSrcX2: require('../images/modal/image-1@2x.png'),
-  appleBooksSrcX1: require('../images/modal/image-2@1x.png'),
-  appleBooksSrcX2: require('../images/modal/image-2@2x.png'),
-  barnesAndNobleSrcX1: require('../images/modal/image-3@1x.png'),
-  barnesAndNobleSrcX2: require('../images/modal/image-3@2x.png'),
+  amazonSrcX1: require('../../images/modal/image-1@1x.png'),
+  amazonSrcX2: require('../../images/modal/image-1@2x.png'),
+  appleBooksSrcX1: require('../../images/modal/image-2@1x.png'),
+  appleBooksSrcX2: require('../../images/modal/image-2@2x.png'),
+  barnesAndNobleSrcX1: require('../../images/modal/image-3@1x.png'),
+  barnesAndNobleSrcX2: require('../../images/modal/image-3@2x.png'),
 };
 
 if (currentStorage) {
