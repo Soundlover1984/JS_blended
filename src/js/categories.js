@@ -1,10 +1,11 @@
 import Notiflix from 'notiflix';
-import { fetchBooks } from '../api/fetchBooks';
-import { makeMarkupGategory, showAllCategories } from '../home/home';
-import { addEventListenerForBook } from '../home/home';
-import { showAllCategories } from '../home/home';
-import { Spiner } from '../other/spinerLoader';
-import { currentDocumentScroll } from '../home/home';
+import { fetchBooks } from '../js/fetchBooks';
+import { makeMarkupGategory, showAllCategories } from './home/allCategories';
+import { addEventListenerForBook } from './home/allCategories';
+import { addEventListenerForBook } from './home/allCategories';
+import { showAllCategories } from './home/allCategories';
+import { Spiner } from './spiner-loader';
+import { currentDocumentScroll } from './home/allCategories';
 
 const listEl = document.querySelector('.categories-list-js');
 const mainListEl = document.querySelector('.main__list-js');

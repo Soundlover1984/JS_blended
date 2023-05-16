@@ -1,4 +1,4 @@
-import spritePath from '../../images/logo-full.svg';
+import spritePath from '../images/logo-full.svg';
 
 const modeSwitch = document.querySelector('.mode-switch');
 const body = document.querySelector('body');

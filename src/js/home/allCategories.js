@@ -1,9 +1,10 @@
 import Notiflix from 'notiflix';
-import { fetchBooks } from '../api/fetchBooks';
-import { handleModalWindow } from '../book-modal/modal';
-import { drawCategory } from '../side-bar/categories';
-import { Spiner } from '../other/spinerLoader';
+import { fetchBooks } from '../fetchBooks';
+import { handleModalWindow } from '../modal';
+import { drawCategory } from '../categories';
+import { Spiner } from '../spiner-loader';
 import debounce from 'lodash.debounce';
+
 
 const mainTitleEl = document.querySelector('.main__title-js');
 const mainWraperEl = document.querySelector('.main__list-js');
@@ -15,6 +16,7 @@ let title = 0;
 const spiner = new Spiner();
 
 window.addEventListener('resize', debounce(handleWindowResize, 50));
+
 
 // Эта функция отслеживает изменение размера окна браузера. Когда происходит изменение размера, функция получает ширину окна и сравнивает ее с текущей шириной отображения currentRenderWidth. Если происходит изменение условия, указанного в if блоке, то функция вызывает location.reload(), что приводит к перезагрузке страницы. Таким образом, это позволяет перерендерить страницу, когда изменился размер окна, чтобы убедиться, что контент правильно обновляется в соответствии с новым размером окна.
 
@@ -129,6 +131,8 @@ async function feachAllCategories() {
   try {
     spiner.show();
 
+    
+
     const categories = await fetchBooks.getBestSellers();
     validationQuery(categories);
     mainWraperEl.innerHTML = makeMarkupAllCategories(categories);
@@ -143,6 +147,7 @@ async function feachAllCategories() {
   } catch (error) {
     console.log(error);
     spiner.hide();
+  
   }
 }
 
@@ -196,6 +201,7 @@ export const currentDocumentScroll = () => {
 
 // Затем функция drawCategory(title) вызывается для отображения выбранной категории, а функция currentDocumentScroll() прокручивает документ на верхнюю часть страницы.
 
+
 const handleSeeMoreBtnClick = event => {
   title = event.target.dataset.category;
 
@@ -203,6 +209,7 @@ const handleSeeMoreBtnClick = event => {
   drawCategory(title);
   currentDocumentScroll();
 };
+
 
 // Эта функция checkLengthBookTitle принимает два аргумента: title - строку, представляющую заголовок книги и length - максимальное количество символов, которое должно быть возвращено. Функция проверяет длину заголовка (свойство length строки) на превышение максимального значения и если это так, то обрезает заголовок до length символов и добавляет многоточие в конце, используя метод slice() для работы со строками. Если длина заголовка не превышает максимальное значение, функция просто возвращает исходный заголовок без изменений. Например, checkLengthBookTitle('Harry Potter and the Philosopher\'s Stone', 10) вернет строку "Harry Pott...". Весь код экспортируется в виде константы с модификатором export, что позволит использовать его в других файлах модуля.
 
@@ -213,6 +220,8 @@ export const checkLengthBookTitle = (title, length) => {
 
   return title;
 };
+
+
 
 export const addEventListenerForBook = book => {
   book.forEach(el => {
@@ -225,6 +234,7 @@ const addEventListenerForBtn = category => {
     el.addEventListener('click', handleSeeMoreBtnClick);
   });
 };
+
 
 const setCurrentCategory = title => {
   const categoriesListChildren = document.querySelector(

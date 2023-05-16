@@ -23,6 +23,7 @@ Notiflix.Notify.init({ position: 'center-top' });
 //   databaseURL: 'https://powerhouse-book-default-rtdb.firebaseio.com',
 // };
 
+
 const firebaseConfig = {
   apiKey: 'AIzaSyA-cH42dh7JaGNR4kapa13mQ3KQm_krp5I',
   authDomain: 'bookshelf-73651.firebaseapp.com',
@@ -32,6 +33,8 @@ const firebaseConfig = {
   appId: '1:32768268339:web:a258fd056ce553318f2b46',
   measurementId: 'G-754ZL1KF3J',
 };
+
+
 
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);

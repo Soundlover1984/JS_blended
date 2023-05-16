@@ -1,3 +1,4 @@
+
 .scroll-up {
     position: fixed;
     right: 50px;
@@ -22,6 +23,9 @@
     fill: $yellow-color;
  }
 
+// .scroll-up__arrow:hover {
+//     color: #d81919;
+// }
 
 .scroll-up--active {
     visibility: visible;

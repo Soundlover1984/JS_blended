@@ -1,6 +1,5 @@
-
-import { fundArray } from './supportFundArray';
-import { markupCardFund } from './supportCreateList';
+import { fundArray } from './support/fund-array';
+import { markupCardFund } from './support/markup-support';
 import Swiper from 'swiper';
 
 const supportListEl = document.querySelector('.support__list-js');

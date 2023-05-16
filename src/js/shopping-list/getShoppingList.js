@@ -1,5 +1,5 @@
-import { writeUserData } from '../firebase/auth';
-import { Spiner } from '../other/spinerLoader';
+import { writeUserData } from '../auth';
+import { Spiner } from '../spiner-loader';
 
 const shoppingList = document.querySelector('.shopping-main__list-js');
 const emptyList = document.querySelector('.empty-list');
