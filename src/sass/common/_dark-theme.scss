@@ -247,3 +247,8 @@ body.dark,
   color: $dark-color;
   
 }
+
+.dark .scroll-up {
+  background-color: rgba($color: $white-gray-color, $alpha: 0.7);
+  
+}

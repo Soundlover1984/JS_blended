@@ -22,6 +22,7 @@ const firebaseConfig = {
   messagingSenderId: '32768268339',
   appId: '1:32768268339:web:a258fd056ce553318f2b46',
   measurementId: 'G-754ZL1KF3J',
+  databaseURL: 'https://bookshelf-73651-default-rtdb.europe-west1.firebasedatabase.app/',
 };
 
 
