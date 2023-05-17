@@ -1,5 +1,5 @@
 import { fetchBooks } from '../api/BooksApiService';
-import renderModal from '../../templates/modal.hbs';
+import renderModal from '../../partials/modals/modal.hbs';
 import { Spiner } from '../other/spiner-loader';
 import { writeUserData } from '../firebase/auth';
 const globalRefs = {
