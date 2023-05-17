@@ -5,11 +5,11 @@
   "homepage": "https://soundlover1984.github.io/JS_blended/",
   "scripts": {
     "start": "parcel src/*.html",
-    "build": "parcel build src/*.html --public-url /project_JS10/"
+    "build": "parcel build src/*.html --public-url /JS_blended/"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Soundlover1984/project_js10.git"
+    "url": "git+https://github.com/Soundlover1984/JS_blended.git"
   },
   "keywords": [],
   "author": "Alexander Repeta <alexander.repeta@gmail.com>",
