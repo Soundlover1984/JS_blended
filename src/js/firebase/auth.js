@@ -168,32 +168,7 @@ const handleFormSubmit = event => {
 
 formEl.addEventListener('submit', handleFormSubmit);
 
-// Помилки авторизації
 
-function mapAuthCodeToMessage(authCode) {
-  switch (authCode) {
-    case 'auth/invalid-password':
-      return 'Password provided is not corrected';
-
-    case 'auth/invalid-email':
-      return 'Email provided is invalid';
-
-    case 'auth/wrong-password':
-      return 'Wrong password. Please try again';
-
-    case 'auth/user-not-found':
-      return 'User not found. Please check the data';
-
-    case 'auth/email-already-in-use':
-      return 'The provided email is already in use.';
-
-    case 'auth/weak-password':
-      return 'Your password must be at least 8 characters long';
-
-    default:
-      return `Error code: ${authCode}. Please check the data`;
-  }
-}
 
 // Робота з базою даних
 
@@ -248,3 +223,30 @@ export const getUserData = async () => {
     Notiflix.Notify.failure(`Error getting user data from DB: ${error}`);
   }
 };
+
+// Помилки авторизації
+
+function mapAuthCodeToMessage(authCode) {
+  switch (authCode) {
+    case 'auth/invalid-password':
+      return 'Password provided is not corrected';
+
+    case 'auth/invalid-email':
+      return 'Email provided is invalid';
+
+    case 'auth/wrong-password':
+      return 'Wrong password. Please try again';
+
+    case 'auth/user-not-found':
+      return 'User not found. Please check the data';
+
+    case 'auth/email-already-in-use':
+      return 'The provided email is already in use.';
+
+    case 'auth/weak-password':
+      return 'Your password must be at least 8 characters long';
+
+    default:
+      return `Error code: ${authCode}. Please check the data`;
+  }
+}
