@@ -55,8 +55,9 @@ function onButtonSignUp() {
             name="name"
             pattern="[a-zA-Z\u0400-\u04ff]{3,30}"
             required
+            placeholder="NAME"
           />
-          <label for="name" class="form__label form__label-name">Name</label>
+          <label for="name" class="form__label form__label-name"></label>
         </div>`;
   refs.inputName = document.querySelector('.form__input-name');
   refs.inputName.addEventListener('input', debounce(onInput, 300));

@@ -28,21 +28,6 @@ if (currentStorage) {
   localStorage.setItem(BOOKS_DATA_KEY, JSON.stringify([]));
 }
 
-// Этот код экспортирует асинхронную функцию с именем handleModalWindow, которая принимает один аргумент - bookId. Функция выполняет следующие действия:
-
-// Показывает спиннер.
-// Получает данные книги, используя функцию fetchBooks.getBookById() и сохраняет результат в bookData.
-// Получает логическое значение из localStorage, используя ключ USER_DATA_KEY, и сохраняет его в IsUserLogged.
-// Инициализирует переменные amazonUrl, appleBooksUrl и barnesAndNobleUrl, находя соответствующие URL в массиве bookData.buy_links.
-// Добавляет и удаляет CSS-классы для отображения/скрытия модального окна и заднего фона, и добавляет класс для отключения прокрутки.
-// Вставляет динамический HTML-контент в модальное окно с использованием функции renderModal() и отображает его пользователю.
-// Скрывает спиннер.
-// Инициализирует ссылки на различные элементы DOM внутри модального окна.
-// Скрывает определенные элементы (например, кнопку "Добавить в корзину") в зависимости от того, вошел ли пользователь в систему и/или уже добавил ли он книгу в свою корзину.
-// Добавляет слушатели событий для реагирования на действия пользователя (щелчок по кнопке "Добавить в корзину", удаление книги из корзины и т.д.).
-// Определяет несколько функций для обращения с различными типами взаимодействия пользователя.
-// Перехватывает и регистрирует любые ошибки, возникающие во время выполнения функции.
-
 export async function handleModalWindow(bookId) {
   try {
     spiner.show();
@@ -112,14 +97,14 @@ export async function handleModalWindow(bookId) {
       bookArray.push(bookData);
 
       localStorage.setItem(BOOKS_DATA_KEY, JSON.stringify(bookArray));
-      writeUserData(bookArray); //Write user shopping list to DB
+      writeUserData(bookArray); 
       refs.addBtn.classList.add('is-hidden');
       refs.removeBlock.classList.remove('is-hidden');
     }
 
     function handleRemoveBtnClick() {
       bookArray.splice(bookIndex, 1);
-      writeUserData(bookArray); //Write user shopping list to DB
+      writeUserData(bookArray); 
       localStorage.setItem(BOOKS_DATA_KEY, JSON.stringify(bookArray));
 
       refs.addBtn.classList.remove('is-hidden');

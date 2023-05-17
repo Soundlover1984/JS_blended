@@ -11,8 +11,9 @@
             name="name"
             pattern="[a-zA-Z\u0400-\u04ff]{3,30}"
             required
+            placeholder="NAME"
           />
-          <label for="name" class="form__label form__label-name">Name</label>
+          <label for="name" class="form__label form__label-name"></label>
         </div>
       </div>
 
@@ -24,8 +25,9 @@
           name="mail"
           pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$"
           required
+          placeholder="EMAIL"
         />
-        <label for="mail" class="form__label form__label-mail">Email</label>
+        <label for="mail" class="form__label form__label-mail"></label>
         <svg class="form__icon" width="32" height="32">
           <use href="./images/icons.svg#icon-auth-mail"></use>
         </svg>
@@ -38,9 +40,10 @@
           class="form__input form__input-password"
           name="password"
           required
+          placeholder="PASSWORD"
         />
         <label for="password" class="form__label form__label-password"
-          >Password</label
+          ></label
         >
         <svg class="form__icon" width="32" height="32">
           <use href="./images/icons.svg#icon-auth-password"></use>

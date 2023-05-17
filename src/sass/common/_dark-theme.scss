@@ -214,6 +214,10 @@ body.dark,
   border: 2px solid $white-color;
 }
 
+.dark input::placeholder {
+  color: $white-color;
+}
+
 .dark .form__btn-submit {
   background-color: $primary-background-color;
   color: $dark-color;

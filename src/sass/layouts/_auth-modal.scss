@@ -102,12 +102,8 @@
   }
 }
 
-.form__field:hover input,
-.form__field:focus input {
-  border: 2px solid $blue-color;
-}
 
-.form__label {
+input::placeholder {
   font-weight: 700;
   font-size: 16px;
   line-height: 1.12;
@@ -121,27 +117,6 @@
   }
 }
 
-.form__label {
-  position: absolute;
-  top: 50%;
-  left: 24px;
-  transform: translateY(-50%);
-  transition: transform $cubic-time;
-
-  @media screen and (min-width: 768px) {
-    left: 40px;
-  }
-}
-
-.form__input:focus + .form__label,
-.form__input:hover + .form__label {
-  transform: translateY(-46px);
-  color: $blue-color;
-
-  @media screen and (min-width: 768px) {
-    transform: translateY(-54px);
-  }
-}
 
 .checked {
   transform: translateY(-46px);
